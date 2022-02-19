@@ -31,17 +31,14 @@ class yottadotssessionhandler implements SessionHandlerInterface {
         // ,array($this, 'validate_sid')
         // ,array($this, 'update_timestamp')
         );
-//        echo 'setup the database connection'.PHP_EOL;
     }
     public function close(){
         // return value should be true for success or false for failure
         // ...
         //close the database connection)
         if(pg_close($this -> dbconnection)){
-//            echo 'Session has closed'.PHP_EOL;
             return true;
         } else {
-//            echo 'Session close went wrong'.PHP_EOL;
             return false;
         }
     }
@@ -51,23 +48,18 @@ class yottadotssessionhandler implements SessionHandlerInterface {
         //delete the session ID
         $qDelete = ' DELETE FROM sessiondata WHERE idsessiondata=\''.pg_escape_string($sessionId).'\'';
         if(pg_query($this -> dbconnection, $qDelete)) {
-//            echo 'Session has destroyed: '.$sessionId.PHP_EOL;
             return true;
         } else {
-//            echo '$qDelete'.$qDelete.PHP_EOL;
             return false;
         }
     }
     public function gc($maximumLifetime){
         // return value should be true for success or false for failure
-//	    echo 'gc '.$maximumLifetime.PHP_EOL;
         // ...
         return true;
     }
     public function open($sessionSavePath, $sessionName){
         // return value should be true for success or false for failure
-
-//        echo 'Session has opend'.PHP_EOL;
         $nr=session_id();
 //	    echo 'session_id'.strlen($nr).PHP_EOL;
 //	    echo 'sessionid'.$nr.PHP_EOL;
@@ -83,35 +75,19 @@ class yottadotssessionhandler implements SessionHandlerInterface {
             $aResult = pg_fetch_all($qResult);//pg_fetch_all returns an array with values or false when nothing has been found
             if($aResult) {
                 if(count($aResult) > 0 ) {
-//                    echo  'Session read1'.PHP_EOL;
-//                    echo '$sessionId'.$sessionId.PHP_EOL;
-//	                print_r($aResult);
                     return $aResult[0]['sessiondata'];
                 } else {
-//                    echo  'Session read2'.PHP_EOL;
-//                    echo  '$aResult empty'.PHP_EOL;
-//                    echo '$sessionId'.$sessionId.PHP_EOL;
                     return '';
                 }
             } else {
-//                echo  'Session read3'.PHP_EOL;
-//                echo  '$aResult empty or nothing was found'.PHP_EOL;
-//                echo '$sessionId'.$sessionId.PHP_EOL;
                 return '';
             }
         } else {
-//            echo  'Session read4'.PHP_EOL;
-//            echo  '$aResult empty because an error accured'.PHP_EOL;
-//            echo '$sessionId'.$sessionId.PHP_EOL;
             return '';
         }
     }
     public function write($sessionId, $sessionData){
         // return value should be true for success or false for failure
-//        echo 'Session write'.PHP_EOL;
-//        echo '$sessionId : '.$sessionId.PHP_EOL;
-//        echo '$sessionData: '.$sessionData.PHP_EOL;
-//
         $qUpdate = 'UPDATE sessiondata
             SET sessiondata = \''.pg_escape_string($sessionData).'\'
             , lastchanged = now()
@@ -131,7 +107,6 @@ class yottadotssessionhandler implements SessionHandlerInterface {
         $qResult = pg_query($this->dbconnection, $qSelect);
         if($qResult) {
             $aResult = pg_fetch_all($qResult);
-//            echo 'session id created '.$aResult[0]['createuniquesessionid'];
             return $aResult[0]['createuniquesessionid'];
         } else {
             return '';
