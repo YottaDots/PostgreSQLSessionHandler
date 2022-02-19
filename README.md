@@ -6,6 +6,9 @@ This session handler writes the sessiondata in the database so independent of th
 
 ## Usage
 In the script is written what to do.
+
+For the database connection I suggest you make a configfile which is located outside the rootfolder.
+
 The normal sessionhandling of PHP is used, the only difference is that in the index.php file for instance you start with:
 ```PHP
 $handler = new yottadotssessionhandler();
